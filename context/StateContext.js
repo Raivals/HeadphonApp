@@ -42,6 +42,22 @@ export const StateContext = ({ children }) => {
     }
     toast.success(`${qty} ${product.name} added to the cart !`)
   }
+
+  //Remove a product. Wich product are we removing?
+  const onRemove = (product) => {
+    foundProduct = cartItems.find((item) => item._id === product._id)
+    const newCartItems = cartItems.filter((item) => item._id !== product._id)
+
+    setTotalPrice(
+      (prevTotalPrice) =>
+        prevTotalPrice - foundProduct.price * foundProduct.quantity,
+    )
+    setTotalQuantities(
+      (prevTotalQuantities) => prevTotalQuantities - foundProduct.quantity,
+    )
+    setCartItems(newCartItems)
+  }
+
   // Find the product we are working with
   // Ceate Dynamic qty update function on Cart
   const toggleCartItemQuantity = (id, value) => {
@@ -97,6 +113,7 @@ export const StateContext = ({ children }) => {
         decQty,
         onAdd,
         toggleCartItemQuantity,
+        onRemove,
       }}
     >
       {children}
