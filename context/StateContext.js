@@ -1,22 +1,19 @@
 import React, { createContext, useContext, useState, useEffect } from "react"
-
 import { toast } from "react-hot-toast"
 
 const Context = createContext()
 
-// Create context functional component
 export const StateContext = ({ children }) => {
   const [showCart, setShowCart] = useState(false)
   const [cartItems, setCartItems] = useState([])
   const [totalPrice, setTotalPrice] = useState(0)
   const [totalQuantities, setTotalQuantities] = useState(0)
   const [qty, setQty] = useState(1)
-  // Find the product we are working with
+
   let foundProduct
   let index
 
   const onAdd = (product, quantity) => {
-    //Check if the product is already in Cart
     const checkProductInCart = cartItems.find(
       (item) => item._id === product._id,
     )
@@ -34,16 +31,15 @@ export const StateContext = ({ children }) => {
       })
 
       setCartItems(updatedCartItems)
-
-      // Add a product who isn't in the Cart
     } else {
       product.quantity = quantity
+
       setCartItems([...cartItems, { ...product }])
     }
-    toast.success(`${qty} ${product.name} added to the cart !`)
+
+    toast.success(`${qty} ${product.name} added to the cart.`)
   }
 
-  //Remove a product. Wich product are we removing?
   const onRemove = (product) => {
     foundProduct = cartItems.find((item) => item._id === product._id)
     const newCartItems = cartItems.filter((item) => item._id !== product._id)
@@ -58,15 +54,11 @@ export const StateContext = ({ children }) => {
     setCartItems(newCartItems)
   }
 
-  // Find the product we are working with
-  // Ceate Dynamic qty update function on Cart
-  const toggleCartItemQuantity = (id, value) => {
+  const toggleCartItemQuanitity = (id, value) => {
     foundProduct = cartItems.find((item) => item._id === id)
     index = cartItems.findIndex((product) => product._id === id)
-    //Avoid new line of the same product
     const newCartItems = cartItems.filter((item) => item._id !== id)
 
-    // Are  we incr ou decr ?
     if (value === "inc") {
       setCartItems([
         ...newCartItems,
@@ -86,7 +78,6 @@ export const StateContext = ({ children }) => {
     }
   }
 
-  // Create dynamic qty update function
   const incQty = () => {
     setQty((prevQty) => prevQty + 1)
   }
@@ -99,7 +90,6 @@ export const StateContext = ({ children }) => {
     })
   }
 
-  //Context Provider
   return (
     <Context.Provider
       value={{
@@ -112,8 +102,11 @@ export const StateContext = ({ children }) => {
         incQty,
         decQty,
         onAdd,
-        toggleCartItemQuantity,
+        toggleCartItemQuanitity,
         onRemove,
+        setCartItems,
+        setTotalPrice,
+        setTotalQuantities,
       }}
     >
       {children}

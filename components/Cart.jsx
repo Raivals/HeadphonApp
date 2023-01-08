@@ -6,13 +6,11 @@ import {
   AiOutlineLeft,
   AiOutlineShopping,
 } from "react-icons/ai"
-
 import { TiDeleteOutline } from "react-icons/ti"
 import toast from "react-hot-toast"
 
 import { useStateContext } from "../context/StateContext"
 import { urlFor } from "../lib/client"
-
 import getStripe from "../lib/getStripe"
 
 const Cart = () => {
@@ -22,13 +20,13 @@ const Cart = () => {
     totalQuantities,
     cartItems,
     setShowCart,
-    toggleCartItemQuantity,
+    toggleCartItemQuanitity,
     onRemove,
   } = useStateContext()
 
-  const handleCheckOut = async () => {
+  const handleCheckout = async () => {
     const stripe = await getStripe()
-    // API req to our own nextjs backend
+
     const response = await fetch("/api/stripe", {
       method: "POST",
       headers: {
@@ -94,7 +92,7 @@ const Cart = () => {
                         <span
                           className="minus"
                           onClick={() =>
-                            toggleCartItemQuantity(item._id, "dec")
+                            toggleCartItemQuanitity(item._id, "dec")
                           }
                         >
                           <AiOutlineMinus />
@@ -105,7 +103,7 @@ const Cart = () => {
                         <span
                           className="plus"
                           onClick={() =>
-                            toggleCartItemQuantity(item._id, "inc")
+                            toggleCartItemQuanitity(item._id, "inc")
                           }
                         >
                           <AiOutlinePlus />
@@ -131,7 +129,7 @@ const Cart = () => {
               <h3>${totalPrice}</h3>
             </div>
             <div className="btn-container">
-              <button type="button" className="btn" onClick={handleCheckOut}>
+              <button type="button" className="btn" onClick={handleCheckout}>
                 Pay with Stripe
               </button>
             </div>
